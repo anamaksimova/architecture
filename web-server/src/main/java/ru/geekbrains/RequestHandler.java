@@ -1,5 +1,6 @@
 package ru.geekbrains;
 
+import ru.geekbrains.config.Configuration;
 import ru.geekbrains.domain.HttpRequest;
 import ru.geekbrains.domain.HttpResponse;
 
@@ -12,18 +13,23 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Deque;
 
-import static ru.geekbrains.Config.WWW;
+
 
 public class RequestHandler implements Runnable {
 
     private final SocketService socketService;
     private final RequestParser requestParser;
     private ResponseBuilder responseBuilder;
+    private final Configuration config;
+    public static RequestHandler createRequestHandler(SocketService socketService, RequestParser requestParser,  ResponseBuilder responseBuilder, Configuration config) {
+        return new RequestHandler(socketService,requestParser ,responseBuilder,config);
+    }
 
-    public RequestHandler(SocketService socketService, RequestParser requestParser,  ResponseBuilder responseBuilder) {
+    private RequestHandler(SocketService socketService, RequestParser requestParser,  ResponseBuilder responseBuilder, Configuration config) {
         this.socketService = socketService;
         this.requestParser = requestParser;
         this.responseBuilder = responseBuilder;
+        this.config = config;
     }
 
 
@@ -35,7 +41,7 @@ public class RequestHandler implements Runnable {
         System.out.println(httpRequest);
         StringBuilder response = new StringBuilder();
         if (httpRequest.getMethod().equals("GET")) {
-            Path path = Paths.get(WWW, httpRequest.getUrl());
+            Path path = Paths.get(config.getWwwHome(), httpRequest.getUrl());
 
             if (!Files.exists(path)) {
                 HttpResponse httpResponse = responseBuilder.chooseResponse("404");

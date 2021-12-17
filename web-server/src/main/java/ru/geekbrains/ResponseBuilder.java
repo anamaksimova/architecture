@@ -36,9 +36,15 @@ public class ResponseBuilder {
                 break;
 
         }
+        HttpResponse httpResponse = HttpResponse.createBuilder()
+               .withHttpVersion(httpVersion)
+                .withCodeDescription(codeDescription)
+                .withHeader(header)
+                .withReply(reply)
+                .build();
+        return httpResponse;}
 
-
-        return new HttpResponse(httpVersion, codeDescription,header,reply);}
+//        return new HttpResponse(httpVersion, codeDescription,header,reply);}
 
 
 }

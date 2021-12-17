@@ -1,6 +1,9 @@
 package ru.geekbrains;
 
 
+import ru.geekbrains.config.ConfigFactory;
+import ru.geekbrains.config.Configuration;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -8,8 +11,9 @@ import java.net.Socket;
 public class WebServer {
 
     public static void main(String[] args) {
-        try (ServerSocket serverSocket = new ServerSocket(Config.PORT)) {
-            System.out.println("Server started!");
+        Configuration config = ConfigFactory.create(args);
+        try (ServerSocket serverSocket = new ServerSocket(config.getPort())) {
+            System.out.printf("Server started at port %d!%n", config.getPort());
             RequestParser requestParser = new RequestParser();
             ResponseBuilder responseBuilder = new ResponseBuilder();
 
@@ -17,7 +21,7 @@ public class WebServer {
                 Socket socket = serverSocket.accept();
                 System.out.println("New client connected!");
 
-                new Thread(new RequestHandler(new SocketService(socket), requestParser, responseBuilder)).start();
+                new Thread(RequestHandler.createRequestHandler(SocketService.createSocketService(socket), requestParser, responseBuilder, config)).start();
             }
         } catch (IOException e) {
             e.printStackTrace();
