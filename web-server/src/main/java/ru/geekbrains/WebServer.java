@@ -3,6 +3,7 @@ package ru.geekbrains;
 
 import ru.geekbrains.config.ConfigFactory;
 import ru.geekbrains.config.Configuration;
+import ru.geekbrains.service.SocketServiceImpl;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -21,7 +22,7 @@ public class WebServer {
                 Socket socket = serverSocket.accept();
                 System.out.println("New client connected!");
 
-                new Thread(RequestHandler.createRequestHandler(SocketService.createSocketService(socket), requestParser, responseBuilder, config)).start();
+                new Thread(RequestHandler.createRequestHandler(SocketServiceImpl.createSocketService(socket), requestParser, responseBuilder, config)).start();
             }
         } catch (IOException e) {
             e.printStackTrace();

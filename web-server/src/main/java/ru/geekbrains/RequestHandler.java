@@ -3,11 +3,9 @@ package ru.geekbrains;
 import ru.geekbrains.config.Configuration;
 import ru.geekbrains.domain.HttpRequest;
 import ru.geekbrains.domain.HttpResponse;
+import ru.geekbrains.service.SocketServiceImpl;
 
-import java.awt.*;
 import java.io.*;
-import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -17,15 +15,15 @@ import java.util.Deque;
 
 public class RequestHandler implements Runnable {
 
-    private final SocketService socketService;
+    private final SocketServiceImpl socketService;
     private final RequestParser requestParser;
     private ResponseBuilder responseBuilder;
     private final Configuration config;
-    public static RequestHandler createRequestHandler(SocketService socketService, RequestParser requestParser,  ResponseBuilder responseBuilder, Configuration config) {
+    public static RequestHandler createRequestHandler(SocketServiceImpl socketService, RequestParser requestParser, ResponseBuilder responseBuilder, Configuration config) {
         return new RequestHandler(socketService,requestParser ,responseBuilder,config);
     }
 
-    private RequestHandler(SocketService socketService, RequestParser requestParser,  ResponseBuilder responseBuilder, Configuration config) {
+    private RequestHandler(SocketServiceImpl socketService, RequestParser requestParser, ResponseBuilder responseBuilder, Configuration config) {
         this.socketService = socketService;
         this.requestParser = requestParser;
         this.responseBuilder = responseBuilder;
