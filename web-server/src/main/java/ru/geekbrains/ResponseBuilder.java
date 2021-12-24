@@ -1,15 +1,28 @@
 package ru.geekbrains;
 
+import ru.geekbrains.config.Configuration;
 import ru.geekbrains.domain.HttpRequest;
 import ru.geekbrains.domain.HttpResponse;
 
-import java.util.Deque;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class ResponseBuilder {
-    StringBuilder response = new StringBuilder();
+    protected final Configuration config;
+
+
     String codeDescription;
     String reply;
-    public HttpResponse chooseResponse(String code){
+
+
+    public ResponseBuilder(Configuration config) {
+        this.config = config;
+    }
+
+    public HttpResponse chooseResponse(String code,HttpRequest request){
+        Path path = Paths.get(config.getWwwHome(), request.getUrl());
        String httpVersion = Config.HTTPVersion;
         switch (code) {
             case  ("404"):
@@ -29,13 +42,22 @@ public class ResponseBuilder {
                 reply   = "<h1>Файл не найден!</h1>";
                 break;
             case ("200"):
-                reply   = "\n";
+                StringBuilder sb = new StringBuilder();
+                try {
+                    Files.readAllLines(path).forEach(sb::append);
+                } catch (IOException e) {
+                    throw new IllegalStateException(e);
+                }
+                reply   = "\n"+ sb;
                 break;
             case ("405"):
                 reply   = "<h1>Метод не поддерживается!</h1>";
                 break;
 
         }
+
+
+
         HttpResponse httpResponse = HttpResponse.createBuilder()
                .withHttpVersion(httpVersion)
                 .withCodeDescription(codeDescription)
