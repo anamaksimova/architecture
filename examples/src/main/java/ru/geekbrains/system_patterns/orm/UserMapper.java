@@ -21,7 +21,7 @@ public class UserMapper {
         this.conn = conn;
         try {
             this.selectUser = conn.prepareStatement("select id, username, password from users where id = ?");
-            this.deleteUser = conn.prepareStatement("delete from from users where id = ?");
+            this.deleteUser = conn.prepareStatement("delete  from users where id = ?");
             this.insertUser = conn.prepareStatement("insert into users (username, password) values(?,?)");
             this.updateUser = conn.prepareStatement("update users set username=? , password=? where id=?" );
         } catch (SQLException e) {
@@ -29,10 +29,10 @@ public class UserMapper {
         }
     }
 
-    public Optional<User> findById(long id) {
+    public User findById(long id) {
         User user = identityMap.get(id);
         if (user != null) {
-            return Optional.of(user);
+            return user;
         }
         try {
             selectUser.setLong(1, id);
@@ -40,12 +40,12 @@ public class UserMapper {
             if (rs.next()) {
                 user = new User(rs.getInt(1), rs.getString(2), rs.getString(3));
                 identityMap.put(id, user);
-                return Optional.of(user);
+                return user;
             }
         } catch (SQLException e) {
             throw new IllegalStateException(e);
         }
-        return Optional.empty();
+        return null;
     }
 
     public void update(User user) throws SQLException {
@@ -53,20 +53,20 @@ public class UserMapper {
         updateUser.setString(1, user.getLogin());
         updateUser.setString( 2, user.getPassword());
         updateUser.setLong(3, user.getId());
-        ResultSet rs = updateUser.executeQuery();
+         updateUser.executeUpdate();
     }
 
     public void insert(User user) throws SQLException {
 
         insertUser.setString(1, user.getLogin());
         insertUser.setString( 2, user.getPassword());
-        ResultSet rs = insertUser.executeQuery();
+     insertUser.executeUpdate();
     }
 
     public void delete(User user) throws SQLException {
        identityMap.remove(user.getId(), user);
         deleteUser.setLong(1, user.getId());
-        ResultSet rs = deleteUser.executeQuery();
+        deleteUser.executeUpdate();
 
     }
 }

@@ -8,7 +8,7 @@ import ru.geekbrains.behavioralPatterns.command.RemoteControl;
 import ru.geekbrains.behavioralPatterns.command.TurnOff;
 import ru.geekbrains.behavioralPatterns.command.TurnOn;
 import ru.geekbrains.behavioralPatterns.mediator.ChatRoom;
-import ru.geekbrains.behavioralPatterns.mediator.User;
+
 import ru.geekbrains.behavioralPatterns.memento.Editor;
 import ru.geekbrains.behavioralPatterns.memento.EditorMemento;
 import ru.geekbrains.behavioralPatterns.state.LowerCase;
@@ -148,18 +148,25 @@ public class Main {
 //        editor.type("Fifth line");
 
         //9.template
-        AndroidBuilder androidBuilder = new AndroidBuilder();
-        androidBuilder.build();
+//        AndroidBuilder androidBuilder = new AndroidBuilder();
+//        androidBuilder.build();
+        try {Connection connection = DriverManager
+                .getConnection("jdbc:mysql://localhost:3306/eshop_db_2?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC", "me", "521027521027521027");
+            UserMapper ur = new UserMapper(connection);
 
 
+         User user = new User(11,"555","555");
+         User user2 = new User(6,"777","777");
+
+          System.out.println("done");
+
+            ur.insert(user2);
+
+//            ur.update(user1);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
 
-
-
-
-
-
-
-
-    }
+}
 }
