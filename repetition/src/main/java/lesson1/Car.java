@@ -1,9 +1,9 @@
 package lesson1;
 
  public class Car implements Movable{
-    int speed;
-    String color;
-    Engine engine;
+   private int speed;
+   private String color;
+   private Engine engine;
      Car(int speed, String color, Engine engine) {
         this.speed = speed;
         this.color = color;

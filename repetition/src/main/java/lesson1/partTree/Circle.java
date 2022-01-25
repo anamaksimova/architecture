@@ -7,13 +7,14 @@ public class Circle extends Figure{
         this.radius = radius;
     }
 
+
     @Override
-    public double Area() {
+    double area() {
         return Math.PI*radius*radius;
     }
 
     @Override
-    public void PrintArea() {
-        System.out.println("Area of a circle is "+ Area());
+    public void printArea() {
+        System.out.println("Area of a circle is "+ area());
     }
 }

@@ -9,12 +9,12 @@ public class Triangle extends Figure{
     int side;
     int height;
     @Override
-    public double Area() {
+    double area() {
         return 0.5*side*height;
     }
 
     @Override
-    public void PrintArea() {
-        System.out.println("Area of a Triangle "+ Area());
+    public void printArea() {
+        System.out.println("Area of a Triangle "+ area());
     }
 }
