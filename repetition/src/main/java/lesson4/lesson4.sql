@@ -74,7 +74,14 @@ from
                                                                                            and N1.idschedule<N2.idschedule
 order by break desc;
 -- Задание 3
-select t.film_name, count(t.s2) as total_visitors
-from (SELECT schedule.time, schedule.price, schedule.film_name, schedule.idschedule as s1, tickets_sold.idschedule as s2 FROM schedule JOIN tickets_sold ON schedule.idschedule = tickets_sold.idschedule)
-         as t
-group by t.film_name;
+-- select t.film_name, count(t.s2) as total_visitors,
+--        sum(t.price) as total
+-- from (SELECT schedule.time, schedule.price, schedule.film_name, schedule.idschedule as s1, tickets_sold.idschedule as s2 FROM schedule JOIN tickets_sold ON schedule.idschedule = tickets_sold.idschedule)
+--          as t
+-- group by t.film_name
+-- order by total desc;
+
+SELECT COALESCE(tt.film_name,'total') film_name,SUM(tt.total_visitors) as total_visitors,SUM(tt.total) as total
+FROM (select t.film_name, count(t.s2) as total_visitors,  sum(t.price) as total
+ from (SELECT schedule.price, schedule.film_name, schedule.idschedule as s1, tickets_sold.idschedule as s2 FROM schedule JOIN tickets_sold ON schedule.idschedule = tickets_sold.idschedule)
+      as t group by t.film_name) as tt GROUP BY tt.film_name  WITH ROLLUP;
