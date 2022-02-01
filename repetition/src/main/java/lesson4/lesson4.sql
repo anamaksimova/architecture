@@ -85,3 +85,12 @@ SELECT COALESCE(tt.film_name,'total') film_name,SUM(tt.total_visitors) as total_
 FROM (select t.film_name, count(t.s2) as total_visitors,  sum(t.price) as total
  from (SELECT schedule.price, schedule.film_name, schedule.idschedule as s1, tickets_sold.idschedule as s2 FROM schedule JOIN tickets_sold ON schedule.idschedule = tickets_sold.idschedule)
       as t group by t.film_name) as tt GROUP BY tt.film_name  WITH ROLLUP;
+
+//не могу сделать ,чтоб и остальные временные промежутки добавились
+
+SELECT COALESCE(tt.film_name,'total') film_name,SUM(tt.total_visitors) as total_visitors,SUM(tt.total) as  'total 9:00-15:00'
+FROM (select t.film_name, count(t.s2) as total_visitors, sum(t.price) as total
+   from (SELECT schedule.price, schedule.film_name, schedule.idschedule as s1, tickets_sold.idschedule as s2
+   FROM schedule JOIN tickets_sold ON schedule.idschedule = tickets_sold.idschedule
+     where time(schedule.time) between "09:00:00" and "15:00:00")
+     as t group by t.film_name) as tt GROUP BY tt.film_name  WITH ROLLUP;
