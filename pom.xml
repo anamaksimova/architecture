@@ -19,6 +19,7 @@
         <module>web-server</module>
         <module>examples</module>
         <module>repetition</module>
+        <module>hibernate</module>
     </modules>
 
 </project>
