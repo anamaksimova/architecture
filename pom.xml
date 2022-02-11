@@ -20,6 +20,7 @@
         <module>examples</module>
         <module>repetition</module>
         <module>hibernate</module>
+        <module>myservlet</module>
     </modules>
 
 </project>
